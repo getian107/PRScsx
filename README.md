@@ -100,7 +100,11 @@ For each input GWAS, PRS-CS-mult writes posterior SNP effect size estimates for 
 
 ## Test Data
 
+The test data contains EUR and EAS GWAS summary statistics and a bim file for 1,000 SNPs on chromosome 22.
+An example to use the test data:
 
+`
+python PRScs-mult.py --ref_dir=path_to_ref --bim_prefix=path_to_bim/test --sst_file=path_to_sumstats/EUR_sumstats.txt,path_to_sumstats/EAS_sumstats.txt --n_gwas=200000,100000 --pop=EUR,EAS --chrom=22 --phi=1e-2 --out_dir=path_to_output --out_name=eur,eas
 
 
 ## Support
