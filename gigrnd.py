@@ -9,7 +9,7 @@ Reference: L Devroye. Random variate generation for the generalized inverse Gaus
 
 
 import math
-import random
+from scipy import random
 
 
 def psi(x, alpha, lam):
@@ -46,7 +46,7 @@ def gigrnd(p, a, b):
         swap = False
 
     alpha = math.sqrt(math.pow(omega,2)+math.pow(lam,2))-lam
-    
+
     # find t
     x = -psi(1, alpha, lam)
     if (x >= 1/2) and (x <= 2):
