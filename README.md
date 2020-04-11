@@ -1,6 +1,6 @@
-# PRS-CS-mult
+# PRS-CSx
 
-**PRS-CS-mult** is a Python based command line tool for multi-ethnic multi-trait polygenic prediction, which infers posterior SNP effect sizes under continuous shrinkage (CS) priors using GWAS summary statistics and external LD reference panels. It is an extension of the polygenic prediction method PRS-CS (`https://github.com/getian107/PRScs`), described in the article:
+**PRS-CSx** is a Python based command line tool for multi-ethnic polygenic prediction, which infers posterior SNP effect sizes under continuous shrinkage (CS) priors using GWAS summary statistics and external LD reference panels. It is an extension of the polygenic prediction method PRS-CS (`https://github.com/getian107/PRScs`), described in the article:
 
 T Ge, CY Chen, Y Ni, YCA Feng, JW Smoller. Polygenic Prediction via Bayesian Regression and Continuous Shrinkage Priors. *Nature Communications*, 10:1776, 2019.
 
