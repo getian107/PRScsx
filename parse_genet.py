@@ -118,33 +118,17 @@ def parse_sumstats(ref_dict, vld_dict, sst_file, pop, n_subj):
                 sst_eff.update({snp: beta_std})
 
 
-    sst_dict = {'CHR':[], 'SNP':[], 'BP':[], 'A1':[], 'A2':[], 'FRQ':[], 'BETA':[], 'FLP':[]}
+    sst_dict = {'SNP':[], 'FRQ':[], 'BETA':[], 'FLP':[]}
     for (ii,snp) in enumerate(ref_dict['SNP']):
         if snp in sst_eff:
             sst_dict['SNP'].append(snp)
-            sst_dict['CHR'].append(ref_dict['CHR'][ii])
-            sst_dict['BP'].append(ref_dict['BP'][ii])
             sst_dict['BETA'].append(sst_eff[snp])
 
             a1 = ref_dict['A1'][ii]; a2 = ref_dict['A2'][ii]
-            if (snp, a1, a2) in comm_snp:
-                sst_dict['A1'].append(a1)
-                sst_dict['A2'].append(a2)
+            if (snp, a1, a2) in comm_snp or (snp, mapping[a1], mapping[a2]) in comm_snp:
                 sst_dict['FRQ'].append(ref_dict['FRQ_'+pop.upper()][ii])
                 sst_dict['FLP'].append(ref_dict['FLP_'+pop.upper()][ii])
-            elif (snp, a2, a1) in comm_snp:
-                sst_dict['A1'].append(a2)
-                sst_dict['A2'].append(a1)
-                sst_dict['FRQ'].append(1-ref_dict['FRQ_'+pop.upper()][ii])
-                sst_dict['FLP'].append(-1*ref_dict['FLP_'+pop.upper()][ii])
-            elif (snp, mapping[a1], mapping[a2]) in comm_snp:
-                sst_dict['A1'].append(mapping[a1])
-                sst_dict['A2'].append(mapping[a2])
-                sst_dict['FRQ'].append(ref_dict['FRQ_'+pop.upper()][ii])
-                sst_dict['FLP'].append(ref_dict['FLP_'+pop.upper()][ii])
-            elif (snp, mapping[a2], mapping[a1]) in comm_snp:
-                sst_dict['A1'].append(mapping[a2])
-                sst_dict['A2'].append(mapping[a1])
+            elif (snp, a2, a1) in comm_snp or (snp, mapping[a2], mapping[a1]) in comm_snp:
                 sst_dict['FRQ'].append(1-ref_dict['FRQ_'+pop.upper()][ii])
                 sst_dict['FLP'].append(-1*ref_dict['FLP_'+pop.upper()][ii])
 
@@ -179,7 +163,7 @@ def parse_ldblk(ldblk_dir, sst_dict, pop, chrom):
     return ld_blk, blk_size
 
 
-def align_ldblk(ref_dict, sst_dict, n_pop, chrom):
+def align_ldblk(ref_dict, vld_dict, sst_dict, n_pop, chrom):
     print('... align reference LD on chromosome %d across populations ...' % chrom)
 
     snp_dict = {'CHR':[], 'SNP':[], 'BP':[], 'A1':[], 'A2':[]}
@@ -189,9 +173,11 @@ def align_ldblk(ref_dict, sst_dict, n_pop, chrom):
                 snp_dict['SNP'].append(snp)
                 snp_dict['CHR'].append(ref_dict['CHR'][ii])
                 snp_dict['BP'].append(ref_dict['BP'][ii])
-                snp_dict['A1'].append(ref_dict['A1'][ii])
-                snp_dict['A2'].append(ref_dict['A2'][ii])
-                break    
+
+                idx = vld_dict['SNP'].index(snp)
+                snp_dict['A1'].append(vld_dict['A1'][idx])
+                snp_dict['A2'].append(vld_dict['A2'][idx])
+                break
 
     n_snp = len(snp_dict['SNP'])
     print('... %d valid SNPs across populations ...' % n_snp)
