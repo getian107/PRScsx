@@ -120,7 +120,7 @@ def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size,
         beta_est[pp] /= het[pp]
 
     # meta
-    if meta == 'True':
+    if meta == 'TRUE':
         vv = sp.zeros((p_tot,1))
         zz = sp.zeros((p_tot,1))
         for pp in range(n_pop):
@@ -144,7 +144,7 @@ def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size,
             for snp, bp, a1, a2, beta in zip(snp_pp, bp_pp, a1_pp, a2_pp, beta_est[pp]):
                 ff.write('%d\t%s\t%d\t%s\t%s\t%.6e\n' % (chrom, snp, bp, a1, a2, beta))
 
-    if meta == 'True':
+    if meta == 'TRUE':
         if phi_updt == True:
             eff_file = out_dir + '/' + '%s_META_pst_eff_a%d_b%.1f_phiauto_chr%d.txt' % (out_name, a, b, chrom)
         else:

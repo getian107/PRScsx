@@ -55,14 +55,16 @@ def parse_bim(bim_file, chrom):
 def parse_sumstats(ref_dict, vld_dict, sst_file, pop, n_subj):
     print('... parse ' + pop.upper() + ' sumstats file: %s ...' % sst_file)
 
+    ATGC = ['A', 'T', 'G', 'C']
     sst_dict = {'SNP':[], 'A1':[], 'A2':[]}
     with open(sst_file) as ff:
         header = next(ff)
         for line in ff:
             ll = (line.strip()).split()
-            sst_dict['SNP'].append(ll[0])
-            sst_dict['A1'].append(ll[1])
-            sst_dict['A2'].append(ll[2])
+            if ll[1] in ATGC and ll[2] in ATGC:
+                sst_dict['SNP'].append(ll[0])
+                sst_dict['A1'].append(ll[1])
+                sst_dict['A2'].append(ll[2])
 
     print('... %d SNPs read from %s ...' % (len(sst_dict['SNP']), sst_file))
 
@@ -74,7 +76,6 @@ def parse_sumstats(ref_dict, vld_dict, sst_file, pop, n_subj):
 
 
     mapping = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
-    ATGC = ['A', 'T', 'G', 'C']
 
     vld_snp = set(zip(vld_dict['SNP'], vld_dict['A1'], vld_dict['A2']))
 
@@ -83,8 +84,8 @@ def parse_sumstats(ref_dict, vld_dict, sst_file, pop, n_subj):
               set(zip(snp_ref, [mapping[aa] for aa in a2_ref], [mapping[aa] for aa in a1_ref]))
 
     sst_snp = set(zip(sst_dict['SNP'], sst_dict['A1'], sst_dict['A2'])) | set(zip(sst_dict['SNP'], sst_dict['A2'], sst_dict['A1'])) | \
-              set(zip(sst_dict['SNP'], [mapping[aa] for aa in sst_dict['A1'] if aa in ATGC], [mapping[aa] for aa in sst_dict['A2'] if aa in ATGC])) | \
-              set(zip(sst_dict['SNP'], [mapping[aa] for aa in sst_dict['A2'] if aa in ATGC], [mapping[aa] for aa in sst_dict['A1'] if aa in ATGC]))
+              set(zip(sst_dict['SNP'], [mapping[aa] for aa in sst_dict['A1']], [mapping[aa] for aa in sst_dict['A2']])) | \
+              set(zip(sst_dict['SNP'], [mapping[aa] for aa in sst_dict['A2']], [mapping[aa] for aa in sst_dict['A1']]))
 
     comm_snp = vld_snp & ref_snp & sst_snp
 

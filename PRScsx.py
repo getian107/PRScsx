@@ -84,7 +84,7 @@ def parse_param():
                       'n_iter=', 'n_burnin=', 'thin=', 'out_dir=', 'out_name=', 'chrom=', 'meta=', 'seed=', 'help']
 
     param_dict = {'ref_dir': None, 'bim_prefix': None, 'sst_file': None, 'a': 1, 'b': 0.5, 'phi': None, 'n_gwas': None, 'pop': None,
-                  'n_iter': 1000, 'n_burnin': 500, 'thin': 5, 'out_dir': None, 'out_name': None, 'chrom': range(1,23), 'meta': 'False', 'seed': None}
+                  'n_iter': 1000, 'n_burnin': 500, 'thin': 5, 'out_dir': None, 'out_name': None, 'chrom': range(1,23), 'meta': 'FALSE', 'seed': None}
 
     print('\n')
 
@@ -114,7 +114,7 @@ def parse_param():
             elif opt == "--out_dir": param_dict['out_dir'] = arg
             elif opt == "--out_name": param_dict['out_name'] = arg
             elif opt == "--chrom": param_dict['chrom'] = arg.split(',')
-            elif opt == "--meta": param_dict['meta'] = arg
+            elif opt == "--meta": param_dict['meta'] = arg.upper()
             elif opt == "--seed": param_dict['seed'] = int(arg)
     else:
         print(__doc__)
