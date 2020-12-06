@@ -45,7 +45,7 @@ python PRScsx.py --ref_dir=PATH_TO_REFERENCE --bim_prefix=VALIDATION_BIM_PREFIX 
 `
 - PATH_TO_REFERENCE (required): Full path to the directory that contains the SNP information file `snpinfo_mult_hm3` and `ldblk_1kg_eur` and/or `ldblk_1kg_eas` and/or `ldblk_1kg_afr`.
 
- - VALIDATION_BIM_PREFIX (required): Full path and the prefix of the bim file for the validation/testing set.
+ - VALIDATION_BIM_PREFIX (required): Full path and the prefix of the bim file for the target (validation/testing) dataset. This file is used to provide a list of SNPs that are available in the target dataset.
 
  - SUM_STATS_FILE (required): Full path and the file name of the GWAS summary statistics. Multiple GWAS summary statistics files are allowed and should be separated by comma. Summary statistics files must have the following format (including the header line and order of the columns):
 
