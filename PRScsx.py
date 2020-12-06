@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 """
-PRS-CSx: a cross-ethnic polygenic prediction method that infers posterior SNP effect sizes under continuous shrinkage (CS) priors
-using GWAS summary statistics and external LD reference panels from multiple populations. It is an extension of the polygenic prediction method PRS-CS.
+PRS-CSx: a method that integrates GWAS summary statistics and external LD reference panels from multiple populations to improve cross-population polygenic prediction.
+Posterior SNP effect sizes are inferred under coupled continuous shrinkage (CS) priors across populations.
+PRS-CSx is an extension of the Bayesian polygenic prediction method PRS-CS.
 
 Reference: T Ge, CY Chen, Y Ni, YCA Feng, JW Smoller. Polygenic Prediction via Bayesian Regression and Continuous Shrinkage Priors.
            Nature Communications, 10:1776, 2019.
@@ -16,7 +17,8 @@ python PRScsx.py --ref_dir=PATH_TO_REFERENCE --bim_prefix=VALIDATION_BIM_PREFIX 
 
  - PATH_TO_REFERENCE: Full path to the directory that contains the SNP information file snpinfo_mult_hm3 and ldblk_1kg_eur and/or ldblk_1kg_eas and/or ldblk_1kg_afr.
 
- - VALIDATION_BIM_PREFIX: Full path and the prefix of the bim file for the validation/testing set.
+ - VALIDATION_BIM_PREFIX: Full path and the prefix of the bim file for the target (validation/testing) dataset.
+                          This file is used to provide a list of SNPs that are available in the target dataset.
 
  - SUM_STATS_FILE: Full path and the file name of the GWAS summary statistics.
                    Multiple GWAS summary statistics files are allowed and should be separated by comma.
@@ -52,19 +54,20 @@ python PRScsx.py --ref_dir=PATH_TO_REFERENCE --bim_prefix=VALIDATION_BIM_PREFIX 
                          This usually works well for polygenic traits with very large GWAS sample sizes (hundreds of thousands of subjects).
                          For GWAS with limited sample sizes (including most of the current disease GWAS),
                          fixing phi to 1e-2 (for highly polygenic traits) or 1e-4 (for less polygenic traits),
-                         or doing a small-scale grid search (e.g., phi=1e-6, 1e-4, 1e-2, 1) to find the optimal phi value often improves perdictive performance.
+                         or doing a small-scale grid search (e.g., phi=1e-6, 1e-4, 1e-2, 1) to find the optimal phi value 
+                         in the validation dataset often improves perdictive performance.
 
  - MCMC_ITERATIONS (optional): Total number of MCMC iterations. Default is 1,000.
 
  - MCMC_BURNIN (optional): Number of burnin iterations. Default is 500.
 
- - MCMC_THINNING_FACTOR (optional): Thinning of the Markov chain. Default is 5.
+ - MCMC_THINNING_FACTOR (optional): Thinning factor of the Markov chain. Default is 5.
 
  - CHROM (optional): The chromosome on which the model is fitted, separated by comma, e.g., --chrom=1,3,5.
                      Parallel computation for the 22 autosomes is recommended. Default is iterating through 22 autosomes (can be time-consuming).
 
- - META_FLAG (optional): If True, return combined effect size estimates across populations using an inverse-variance-weighted meta-analysis, 
-                         in addition to the population-specific posterior effect size estimates. Default is False.
+ - META_FLAG (optional): If True, return combined SNP effect sizes across populations using 
+                         an inverse-variance-weighted meta-analysis of the population-specific posterior effect size estimates. Default is False.
 
  - SEED (optional): Non-negative integer which seeds the random number generator.
 
@@ -106,7 +109,7 @@ def parse_param():
             elif opt == "--a": param_dict['a'] = float(arg)
             elif opt == "--b": param_dict['b'] = float(arg)
             elif opt == "--phi": param_dict['phi'] = float(arg)
-            elif opt == "--n_gwas": param_dict['n_gwas'] = map(int, arg.split(','))
+            elif opt == "--n_gwas": param_dict['n_gwas'] = list(map(int,arg.split(',')))
             elif opt == "--pop": param_dict['pop'] = arg.split(',')
             elif opt == "--n_iter": param_dict['n_iter'] = int(arg)
             elif opt == "--n_burnin": param_dict['n_burnin'] = int(arg)
@@ -125,7 +128,7 @@ def parse_param():
         print('* Please specify the directory to the reference panel using --ref_dir\n')
         sys.exit(2)
     elif param_dict['bim_prefix'] == None:
-        print('* Please specify the directory and prefix of the bim file for the validation/testing set using --bim_prefix\n')
+        print('* Please specify the directory and prefix of the bim file for the target (validation/testing) dataset using --bim_prefix\n')
         sys.exit(2)
     elif param_dict['sst_file'] == None:
         print('* Please provide at least one summary statistics file using --sst_file\n')
@@ -135,6 +138,7 @@ def parse_param():
         sys.exit(2)
     elif param_dict['pop'] == None:
         print('* Please specify the population of the GWAS sample using --pop\n')
+        sys.exit(2)
     elif param_dict['out_dir'] == None:
         print('* Please specify the output directory using --out_dir\n')
         sys.exit(2)
