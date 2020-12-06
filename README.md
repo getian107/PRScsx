@@ -24,7 +24,7 @@ T Ge, CY Chen, Y Ni, YCA Feng, JW Smoller. Polygenic Prediction via Bayesian Reg
     [AFR reference](https://www.dropbox.com/s/mq94h1q9uuhun1h/ldblk_1kg_afr.tar.gz?dl=0 "AFR reference") (~4.44G);
     `tar -zxvf ldblk_1kg_afr.tar.gz`
 
-    Note that these files are identical to the reference panels used in **PRS-CS**, and therefore there is no need to download again if you are already using **PRS-CS**.
+    Note that these files are identical to the reference panels used in **PRS-CS**. Therefore, there is no need to download again if you are already using **PRS-CS**.
 
 - Download the SNP information file and put it in the same folder containing the reference panels:
     [SNP info](https://www.dropbox.com/s/rhi806sstvppzzz/snpinfo_mult_hm3?dl=0 "SNP info") (~77M)
