@@ -13,7 +13,7 @@ T Ge, CY Chen, Y Ni, YCA Feng, JW Smoller. Polygenic Prediction via Bayesian Reg
 
     Alternatively, download the source files from the github website (`https://github.com/getian107/PRScsx`)
     
-- Download the LD reference computed using the 1000 Genomes samples, and extract files:
+- Download the LD reference computed using the 1000 Genomes phase 3 samples, and extract files:
 
     [EUR reference](https://www.dropbox.com/s/p9aqanhxvxaqv8k/ldblk_1kg_eur.tar.gz?dl=0 "EUR reference") (~4.56G);
     `tar -zxvf ldblk_1kg_eur.tar.gz`
