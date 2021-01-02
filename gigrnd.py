@@ -66,7 +66,10 @@ def gigrnd(p, a, b):
         if alpha == 0:
             s = 1/lam
         else:
-            s = min(1/lam, math.log(1+1/alpha+math.sqrt(1/math.pow(alpha,2)+2/alpha)))
+            if lam==0:
+                s =  math.log(1+1/alpha+math.sqrt(1/math.pow(alpha,2)+2/alpha))
+            else:
+                s = min(1/lam, math.log(1+1/alpha+math.sqrt(1/math.pow(alpha,2)+2/alpha)))
 
     # find auxiliary parameters
     eta = -psi(t, alpha, lam)
