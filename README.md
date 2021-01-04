@@ -4,6 +4,15 @@
 
 T Ge, CY Chen, Y Ni, YCA Feng, JW Smoller. Polygenic Prediction via Bayesian Regression and Continuous Shrinkage Priors. *Nature Communications*, 10:1776, 2019.
 
+Preprint of PRS-CSx is available on medrxiv: https://www.medrxiv.org/content/10.1101/2020.12.27.20248738v1
+
+
+## Recent Version History
+
+**Jan 4, 2021**: Improved the accuracy and robustness of random sampling from the generalized inverse Gaussian distribution.
+
+**Dec 20, 2020**: Repository made public.
+
 
 ## Getting Started
 
