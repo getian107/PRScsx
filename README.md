@@ -9,6 +9,8 @@ Preprint of PRS-CSx is available on medrxiv: https://www.medrxiv.org/content/10.
 
 ## Recent Version History
 
+**Mar 4, 2021**: LD reference panels constructed using the UK Biobank data are now available. 
+
 **Jan 4, 2021**: Improved the accuracy and robustness of random sampling from the generalized inverse Gaussian distribution. Prediction accuracy will probably slightly improve over the initial release.
 
 **Dec 20, 2020**: Repository made public.
