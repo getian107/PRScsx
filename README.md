@@ -54,7 +54,9 @@ Preprint of PRS-CSx is available on medrxiv: https://www.medrxiv.org/content/10.
     Note that these files are identical to the reference panels used in **PRS-CS**. Therefore, there is no need to download again if you are already using **PRS-CS**.
 
 - Download the SNP information file and put it in the same folder containing the reference panels:
+
     1000 Genomes reference: [SNP info](https://www.dropbox.com/s/rhi806sstvppzzz/snpinfo_mult_1kg_hm3?dl=0 "SNP info") (~77M)
+    
     UK Biobank reference: [SNP info](https://www.dropbox.com/s/oyn5trwtuei27qj/snpinfo_mult_ukbb_hm3?dl=0 "SNP info") (~93M)
     
 - PRScsx requires Python packages **scipy** (https://www.scipy.org/) and **h5py** (https://www.h5py.org/) installed.
