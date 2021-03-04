@@ -52,7 +52,7 @@ Preprint of PRS-CSx is available on medrxiv: https://www.medrxiv.org/content/10.
     Note that these files are identical to the reference panels used in **PRS-CS**. Therefore, there is no need to download again if you are already using **PRS-CS**.
 
 - Download the SNP information file and put it in the same folder containing the reference panels:
-    1000 Genomes refereence: [SNP info](https://www.dropbox.com/s/rhi806sstvppzzz/snpinfo_mult_1kg_hm3?dl=0 "SNP info") (~77M)
+    1000 Genomes reference: [SNP info](https://www.dropbox.com/s/rhi806sstvppzzz/snpinfo_mult_1kg_hm3?dl=0 "SNP info") (~77M)
     UK Biobank reference: [SNP info](https://www.dropbox.com/s/oyn5trwtuei27qj/snpinfo_mult_ukbb_hm3?dl=0 "SNP info") (~93M)
     
 - PRScsx requires Python packages **scipy** (https://www.scipy.org/) and **h5py** (https://www.h5py.org/) installed.
@@ -69,7 +69,7 @@ Preprint of PRS-CSx is available on medrxiv: https://www.medrxiv.org/content/10.
 `
 python PRScsx.py --ref_dir=PATH_TO_REFERENCE --bim_prefix=VALIDATION_BIM_PREFIX --sst_file=SUM_STATS_FILE --n_gwas=GWAS_SAMPLE_SIZE --pop=POPULATION --out_dir=OUTPUT_DIR --out_name=OUTPUT_FILE_PREFIX [--a=PARAM_A --b=PARAM_B --phi=PARAM_PHI --n_iter=MCMC_ITERATIONS --n_burnin=MCMC_BURNIN --thin=MCMC_THINNING_FACTOR --chrom=CHROM --meta=META_FLAG --seed=SEED]
 `
-- PATH_TO_REFERENCE (required): Full path to the directory that contains the SNP information file `snpinfo_mult_hm3` and `ldblk_1kg_eur` and/or `ldblk_1kg_eas` and/or `ldblk_1kg_afr`.
+ - PATH_TO_REFERENCE (required): Full path to the directory that contains the SNP information file and LD reference panels. If the 1000 Genomes reference is used, the folder would contain the SNP information file `snpinfo_mult_1kg_hm3` and one or more of the LD reference files: `ldblk_1kg_afr` and/or `ldblk_1kg_eas` and/or `ldblk_1kg_eur`; if the UK Biobank reference is used, the folder would contain the SNP information file `snpinfo_mult_ukbb_hm3` and one or more of the LD reference files: `ldblk_1kg_afr` and/or `ldblk_1kg_eas` and/or `ldblk_1kg_eur` and/or `ldblk_1kg_sas`.
 
  - VALIDATION_BIM_PREFIX (required): Full path and the prefix of the bim file for the target (validation/testing) dataset. This file is used to provide a list of SNPs that are available in the target dataset.
 
@@ -95,7 +95,7 @@ where SNP is the rs ID, A1 is the effect allele, A2 is the alternative allele, B
 
  - GWAS_SAMPLE_SIZE (required): Sample sizes of the GWAS, in the same order of the GWAS summary statistics files, separated by comma.
 
- - POPULATION (required): Population of the GWAS sample (EUR, EAS or AFR), in the same order of the GWAS summary statistics files, separated by comma.
+ - POPULATION (required): Population of the GWAS sample, in the same order of the GWAS summary statistics files, separated by comma. If the 1000 Genomes reference is used, AFR, EAS and EUR are allowed; if the UK Biobank reference is used, AFR, EAS, EUR and SAS are allowed.
 
  - OUTPUT_DIR (required): Output directory of the posterior effect size estimates.
 
