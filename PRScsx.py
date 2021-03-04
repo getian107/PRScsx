@@ -8,6 +8,9 @@ PRS-CSx is an extension of the Bayesian polygenic prediction method PRS-CS.
 Reference: T Ge, CY Chen, Y Ni, YCA Feng, JW Smoller. Polygenic Prediction via Bayesian Regression and Continuous Shrinkage Priors.
            Nature Communications, 10:1776, 2019.
 
+           Ruan Y, Feng YCA, Chen CY, Lam M, Stanley Global Asia Initiatives, Sawa A, Martin AR, Qin S, Huang H, Ge T.
+           Improving Polygenic Prediction in Ancestrally Diverse Populations.
+           MedRxiv preprint, 2021.
 
 Usage:
 python PRScsx.py --ref_dir=PATH_TO_REFERENCE --bim_prefix=VALIDATION_BIM_PREFIX --sst_file=SUM_STATS_FILE --n_gwas=GWAS_SAMPLE_SIZE
@@ -15,7 +18,11 @@ python PRScsx.py --ref_dir=PATH_TO_REFERENCE --bim_prefix=VALIDATION_BIM_PREFIX 
                  [--a=PARAM_A --b=PARAM_B --phi=PARAM_PHI --n_iter=MCMC_ITERATIONS --n_burnin=MCMC_BURNIN --thin=MCMC_THINNING_FACTOR
                   --chrom=CHROM --meta=META_FLAG --seed=SEED]
 
- - PATH_TO_REFERENCE: Full path to the directory that contains the SNP information file snpinfo_mult_hm3 and ldblk_1kg_eur and/or ldblk_1kg_eas and/or ldblk_1kg_afr.
+ - PATH_TO_REFERENCE: Full path to the directory that contains the SNP information file and LD reference panels.
+                      If the 1000 Genomes reference is used, the folder would contain the SNP information file snpinfo_mult_1kg_hm3
+                      and one or more of the LD reference files: ldblk_1kg_afr and/or ldblk_1kg_eas and/or ldblk_1kg_eur;
+                      if the UK Biobank reference is used, the folder would contain the SNP information file snpinfo_mult_ukbb_hm3 
+                      and one or more of the LD reference files: ldblk_1kg_afr and/or ldblk_1kg_eas and/or ldblk_1kg_eur and/or ldblk_1kg_sas.
 
  - VALIDATION_BIM_PREFIX: Full path and the prefix of the bim file for the target (validation/testing) dataset.
                           This file is used to provide a list of SNPs that are available in the target dataset.
@@ -40,7 +47,8 @@ python PRScsx.py --ref_dir=PATH_TO_REFERENCE --bim_prefix=VALIDATION_BIM_PREFIX 
 
  - GWAS_SAMPLE_SIZE: Sample sizes of the GWAS, in the same order of the GWAS summary statistics files, separated by comma.
 
- - POPULATION: Population of the GWAS sample (EUR, EAS or AFR), in the same order of the GWAS summary statistics files, separated by comma.
+ - POPULATION: Population of the GWAS sample, in the same order of the GWAS summary statistics files, separated by comma.
+               If the 1000 Genomes reference is used, AFR, EAS and EUR are allowed; if the UK Biobank reference is used, AFR, EAS, EUR and SAS are allowed.
 
  - OUTPUT_DIR: Output directory of the posterior effect size estimates.
 
@@ -74,6 +82,7 @@ python PRScsx.py --ref_dir=PATH_TO_REFERENCE --bim_prefix=VALIDATION_BIM_PREFIX 
 """
 
 
+import os
 import sys
 import getopt
 
@@ -164,7 +173,12 @@ def main():
     for chrom in param_dict['chrom']:
         print('##### process chromosome %d #####' % int(chrom))
 
-        ref_dict = parse_genet.parse_ref(param_dict['ref_dir'] + '/snpinfo_mult_hm3', int(chrom))
+        if os.path.isfile(param_dict['ref_dir'] + '/snpinfo_mult_1kg_hm3'):
+            ref = '1kg'
+            ref_dict = parse_genet.parse_ref(param_dict['ref_dir'] + '/snpinfo_mult_1kg_hm3', int(chrom), ref)
+        elif os.path.isfile(param_dict['ref_dir'] + '/snpinfo_mult_ukbb_hm3'):
+            ref = 'ukbb'
+            ref_dict = parse_genet.parse_ref(param_dict['ref_dir'] + '/snpinfo_mult_ukbb_hm3', int(chrom), ref)
 
         vld_dict = parse_genet.parse_bim(param_dict['bim_prefix'], int(chrom))
 
@@ -175,7 +189,7 @@ def main():
         ld_blk = {}
         blk_size = {}
         for pp in range(n_pop):
-            ld_blk[pp], blk_size[pp] = parse_genet.parse_ldblk(param_dict['ref_dir'], sst_dict[pp], param_dict['pop'][pp], int(chrom))
+            ld_blk[pp], blk_size[pp] = parse_genet.parse_ldblk(param_dict['ref_dir'], sst_dict[pp], param_dict['pop'][pp], int(chrom), ref)
 
         snp_dict, beta_dict, frq_dict, idx_dict = parse_genet.align_ldblk(ref_dict, vld_dict, sst_dict, n_pop, int(chrom))
 

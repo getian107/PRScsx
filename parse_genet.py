@@ -11,26 +11,49 @@ from scipy.stats import norm
 import h5py
 
 
-def parse_ref(ref_file, chrom):
+def parse_ref(ref_file, chrom, ref):
     print('... parse reference file: %s ...' % ref_file)
 
-    ref_dict = {'CHR':[], 'SNP':[], 'BP':[], 'A1':[], 'A2':[], 'FRQ_EUR':[], 'FRQ_EAS':[], 'FRQ_AFR':[], 'FLP_EUR':[], 'FLP_EAS':[], 'FLP_AFR':[]}
-    with open(ref_file) as ff:
-        header = next(ff)
-        for line in ff:
-            ll = (line.strip()).split()
-            if int(ll[0]) == chrom:
-                ref_dict['CHR'].append(chrom)
-                ref_dict['SNP'].append(ll[1])
-                ref_dict['BP'].append(int(ll[2]))
-                ref_dict['A1'].append(ll[3])
-                ref_dict['A2'].append(ll[4])
-                ref_dict['FRQ_EUR'].append(float(ll[5]))
-                ref_dict['FRQ_EAS'].append(float(ll[6]))
-                ref_dict['FRQ_AFR'].append(float(ll[7]))
-                ref_dict['FLP_EUR'].append(int(ll[8]))
-                ref_dict['FLP_EAS'].append(int(ll[9]))
-                ref_dict['FLP_AFR'].append(int(ll[10]))
+    if ref == '1kg':
+        ref_dict = {'CHR':[], 'SNP':[], 'BP':[], 'A1':[], 'A2':[],
+                    'FRQ_EUR':[], 'FRQ_EAS':[], 'FRQ_AFR':[], 'FLP_EUR':[], 'FLP_EAS':[], 'FLP_AFR':[]}
+        with open(ref_file) as ff:
+            header = next(ff)
+            for line in ff:
+                ll = (line.strip()).split()
+                if int(ll[0]) == chrom:
+                    ref_dict['CHR'].append(chrom)
+                    ref_dict['SNP'].append(ll[1])
+                    ref_dict['BP'].append(int(ll[2]))
+                    ref_dict['A1'].append(ll[3])
+                    ref_dict['A2'].append(ll[4])
+                    ref_dict['FRQ_EUR'].append(float(ll[5]))
+                    ref_dict['FRQ_EAS'].append(float(ll[6]))
+                    ref_dict['FRQ_AFR'].append(float(ll[7]))
+                    ref_dict['FLP_EUR'].append(int(ll[8]))
+                    ref_dict['FLP_EAS'].append(int(ll[9]))
+                    ref_dict['FLP_AFR'].append(int(ll[10]))
+    elif ref == 'ukbb':
+        ref_dict = {'CHR':[], 'SNP':[], 'BP':[], 'A1':[], 'A2':[], 
+                    'FRQ_AFR':[], 'FRQ_EAS':[], 'FRQ_EUR':[], 'FRQ_SAS':[], 'FLP_AFR':[], 'FLP_EAS':[], 'FLP_EUR':[], 'FLP_SAS':[]}
+        with open(ref_file) as ff:
+            header = next(ff)
+            for line in ff:
+                ll = (line.strip()).split()
+                if int(ll[0]) == chrom:
+                    ref_dict['CHR'].append(chrom)
+                    ref_dict['SNP'].append(ll[1])
+                    ref_dict['BP'].append(int(ll[2]))
+                    ref_dict['A1'].append(ll[3])
+                    ref_dict['A2'].append(ll[4])
+                    ref_dict['FRQ_AFR'].append(float(ll[5]))
+                    ref_dict['FRQ_EAS'].append(float(ll[6]))
+                    ref_dict['FRQ_EUR'].append(float(ll[7]))
+                    ref_dict['FRQ_SAS'].append(float(ll[8]))
+                    ref_dict['FLP_AFR'].append(int(ll[9]))
+                    ref_dict['FLP_EAS'].append(int(ll[10]))
+                    ref_dict['FLP_EUR'].append(int(ll[11]))
+                    ref_dict['FLP_SAS'].append(int(ll[12]))
 
     print('... %d SNPs on chromosome %d read from %s ...' % (len(ref_dict['SNP']), chrom, ref_file))
     return ref_dict
@@ -139,10 +162,14 @@ def parse_sumstats(ref_dict, vld_dict, sst_file, pop, n_subj):
     return sst_dict
 
 
-def parse_ldblk(ldblk_dir, sst_dict, pop, chrom):
+def parse_ldblk(ldblk_dir, sst_dict, pop, chrom, ref):
     print('... parse %s reference LD on chromosome %d ...' % (pop.upper(), chrom))
 
-    chr_name = ldblk_dir + '/ldblk_1kg_' + pop.lower() + '/ldblk_1kg_chr' + str(chrom) + '.hdf5'
+    if ref == '1kg':
+        chr_name = ldblk_dir + '/ldblk_1kg_' + pop.lower() + '/ldblk_1kg_chr' + str(chrom) + '.hdf5'
+    elif ref == 'ukbb':
+        chr_name = ldblk_dir + '/ldblk_ukbb_' + pop.lower() + '/ldblk_ukbb_chr' + str(chrom) + '.hdf5'
+
     hdf_chr = h5py.File(chr_name, 'r')
     n_blk = len(hdf_chr)
     ld_blk = [sp.array(hdf_chr['blk_'+str(blk)]['ldblk']) for blk in range(1,n_blk+1)]
