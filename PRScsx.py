@@ -22,7 +22,7 @@ python PRScsx.py --ref_dir=PATH_TO_REFERENCE --bim_prefix=VALIDATION_BIM_PREFIX 
                       If the 1000 Genomes reference is used, the folder would contain the SNP information file snpinfo_mult_1kg_hm3
                       and one or more of the LD reference files: ldblk_1kg_afr and/or ldblk_1kg_eas and/or ldblk_1kg_eur;
                       if the UK Biobank reference is used, the folder would contain the SNP information file snpinfo_mult_ukbb_hm3 
-                      and one or more of the LD reference files: ldblk_1kg_afr and/or ldblk_1kg_eas and/or ldblk_1kg_eur and/or ldblk_1kg_sas.
+                      and one or more of the LD reference files: ldblk_ukbb_afr and/or ldblk_ukbb_eas and/or ldblk_ukbb_eur and/or ldblk_ukbb_sas.
 
  - VALIDATION_BIM_PREFIX: Full path and the prefix of the bim file for the target (validation/testing) dataset.
                           This file is used to provide a list of SNPs that are available in the target dataset.
