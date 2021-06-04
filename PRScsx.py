@@ -48,7 +48,7 @@ python PRScsx.py --ref_dir=PATH_TO_REFERENCE --bim_prefix=VALIDATION_BIM_PREFIX 
  - GWAS_SAMPLE_SIZE: Sample sizes of the GWAS, in the same order of the GWAS summary statistics files, separated by comma.
 
  - POPULATION: Population of the GWAS sample, in the same order of the GWAS summary statistics files, separated by comma.
-               If the 1000 Genomes reference is used, AFR, EAS and EUR are allowed; if the UK Biobank reference is used, AFR, EAS, EUR and SAS are allowed.
+               If the 1000 Genomes reference is used, AFR, EAS and EUR are allowed; if the UK Biobank reference is used, AFR, AMR, EAS, EUR and SAS are allowed.
 
  - OUTPUT_DIR: Output directory of the posterior effect size estimates.
 

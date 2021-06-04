@@ -37,7 +37,8 @@ def parse_ref(ref_file, chrom, ref):
                     ref_dict['FLP_AFR'].append(int(ll[10]))
     elif ref == 'ukbb':
         ref_dict = {'CHR':[], 'SNP':[], 'BP':[], 'A1':[], 'A2':[], 
-                    'FRQ_AFR':[], 'FRQ_EAS':[], 'FRQ_EUR':[], 'FRQ_SAS':[], 'FLP_AFR':[], 'FLP_EAS':[], 'FLP_EUR':[], 'FLP_SAS':[]}
+                    'FRQ_AFR':[], 'FRQ_AMR':[], 'FRQ_EAS':[], 'FRQ_EUR':[], 'FRQ_SAS':[],
+                    'FLP_AFR':[], 'FLP_AMR':[], 'FLP_EAS':[], 'FLP_EUR':[], 'FLP_SAS':[]}
         with open(ref_file) as ff:
             header = next(ff)
             for line in ff:
@@ -49,13 +50,15 @@ def parse_ref(ref_file, chrom, ref):
                     ref_dict['A1'].append(ll[3])
                     ref_dict['A2'].append(ll[4])
                     ref_dict['FRQ_AFR'].append(float(ll[5]))
-                    ref_dict['FRQ_EAS'].append(float(ll[6]))
-                    ref_dict['FRQ_EUR'].append(float(ll[7]))
-                    ref_dict['FRQ_SAS'].append(float(ll[8]))
-                    ref_dict['FLP_AFR'].append(int(ll[9]))
-                    ref_dict['FLP_EAS'].append(int(ll[10]))
-                    ref_dict['FLP_EUR'].append(int(ll[11]))
-                    ref_dict['FLP_SAS'].append(int(ll[12]))
+                    ref_dict['FRQ_AMR'].append(float(ll[6]))
+                    ref_dict['FRQ_EAS'].append(float(ll[7]))
+                    ref_dict['FRQ_EUR'].append(float(ll[8]))
+                    ref_dict['FRQ_SAS'].append(float(ll[9]))
+                    ref_dict['FLP_AFR'].append(int(ll[10]))
+                    ref_dict['FLP_AMR'].append(int(ll[11]))
+                    ref_dict['FLP_EAS'].append(int(ll[12]))
+                    ref_dict['FLP_EUR'].append(int(ll[13]))
+                    ref_dict['FLP_SAS'].append(int(ll[14]))
 
     print('... %d SNPs on chromosome %d read from %s ...' % (len(ref_dict['SNP']), chrom, ref_file))
     return ref_dict
