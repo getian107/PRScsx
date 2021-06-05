@@ -9,6 +9,8 @@ Preprint of PRS-CSx is available on medrxiv: https://www.medrxiv.org/content/10.
 
 ## Recent Version History
 
+**Jun 4, 2021**: Expanded reference panels to five populations.
+
 **May 26, 2021**: Added suggestions for limiting the number of threads in scipy when running PRS-CS (see Computational Efficiency section below).
 
 **Apr 6, 2021**: Added projection of the LD matrix to its nearest non-negative definite matrix.
