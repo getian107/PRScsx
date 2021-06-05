@@ -20,9 +20,9 @@ python PRScsx.py --ref_dir=PATH_TO_REFERENCE --bim_prefix=VALIDATION_BIM_PREFIX 
 
  - PATH_TO_REFERENCE: Full path to the directory that contains the SNP information file and LD reference panels.
                       If the 1000 Genomes reference is used, the folder would contain the SNP information file snpinfo_mult_1kg_hm3
-                      and one or more of the LD reference files: ldblk_1kg_afr and/or ldblk_1kg_eas and/or ldblk_1kg_eur;
+                      and one or more of the LD reference files: ldblk_1kg_afr, ldblk_1kg_amr, ldblk_1kg_eas, ldblk_1kg_eur, ldblk_1kg_sas;
                       if the UK Biobank reference is used, the folder would contain the SNP information file snpinfo_mult_ukbb_hm3 
-                      and one or more of the LD reference files: ldblk_ukbb_afr and/or ldblk_ukbb_eas and/or ldblk_ukbb_eur and/or ldblk_ukbb_sas.
+                      and one or more of the LD reference files: ldblk_ukbb_afr, ldblk_ukbb_amr, ldblk_ukbb_eas, ldblk_ukbb_eur, ldblk_ukbb_sas.
 
  - VALIDATION_BIM_PREFIX: Full path and the prefix of the bim file for the target (validation/testing) dataset.
                           This file is used to provide a list of SNPs that are available in the target dataset.
@@ -48,7 +48,7 @@ python PRScsx.py --ref_dir=PATH_TO_REFERENCE --bim_prefix=VALIDATION_BIM_PREFIX 
  - GWAS_SAMPLE_SIZE: Sample sizes of the GWAS, in the same order of the GWAS summary statistics files, separated by comma.
 
  - POPULATION: Population of the GWAS sample, in the same order of the GWAS summary statistics files, separated by comma.
-               If the 1000 Genomes reference is used, AFR, EAS and EUR are allowed; if the UK Biobank reference is used, AFR, AMR, EAS, EUR and SAS are allowed.
+               For both the 1000 Genomes reference and the UK Biobank reference, AFR, AMR, EAS, EUR and SAS are allowed.
 
  - OUTPUT_DIR: Output directory of the posterior effect size estimates.
 
