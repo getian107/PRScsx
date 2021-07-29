@@ -5,7 +5,7 @@ PRS-CSx: a method that integrates GWAS summary statistics and external LD refere
 Posterior SNP effect sizes are inferred under coupled continuous shrinkage (CS) priors across populations.
 PRS-CSx is an extension of the Bayesian polygenic prediction method PRS-CS.
 
-Reference: T Ge, CY Chen, Y Ni, YCA Feng, JW Smoller. Polygenic Prediction via Bayesian Regression and Continuous Shrinkage Priors.
+References: T Ge, CY Chen, Y Ni, YCA Feng, JW Smoller. Polygenic Prediction via Bayesian Regression and Continuous Shrinkage Priors.
            Nature Communications, 10:1776, 2019.
 
            Ruan Y, Feng YCA, Chen CY, Lam M, Stanley Global Asia Initiatives, Sawa A, Martin AR, Qin S, Huang H, Ge T.
@@ -65,9 +65,9 @@ python PRScsx.py --ref_dir=PATH_TO_REFERENCE --bim_prefix=VALIDATION_BIM_PREFIX 
                          or doing a small-scale grid search (e.g., phi=1e-6, 1e-4, 1e-2, 1) to find the optimal phi value 
                          in the validation dataset often improves perdictive performance.
 
- - MCMC_ITERATIONS (optional): Total number of MCMC iterations. Default is 1,000.
+ - MCMC_ITERATIONS (optional): Total number of MCMC iterations. Default is the number of discovery populations * 1,000.
 
- - MCMC_BURNIN (optional): Number of burnin iterations. Default is 500.
+ - MCMC_BURNIN (optional): Number of burnin iterations. Default is the number of discovery populations * 500.
 
  - MCMC_THINNING_FACTOR (optional): Thinning factor of the Markov chain. Default is 5.
 
@@ -96,7 +96,7 @@ def parse_param():
                       'n_iter=', 'n_burnin=', 'thin=', 'out_dir=', 'out_name=', 'chrom=', 'meta=', 'seed=', 'help']
 
     param_dict = {'ref_dir': None, 'bim_prefix': None, 'sst_file': None, 'a': 1, 'b': 0.5, 'phi': None, 'n_gwas': None, 'pop': None,
-                  'n_iter': 1000, 'n_burnin': 500, 'thin': 5, 'out_dir': None, 'out_name': None, 'chrom': range(1,23), 'meta': 'FALSE', 'seed': None}
+                  'n_iter': None, 'n_burnin': None, 'thin': 5, 'out_dir': None, 'out_name': None, 'chrom': range(1,23), 'meta': 'FALSE', 'seed': None}
 
     print('\n')
 
@@ -158,6 +158,11 @@ def parse_param():
           len(param_dict['sst_file']) != len(param_dict['pop'])):
         print('* Length of sst_file, n_gwas and pop does not match\n')
         sys.exit(2)
+
+    n_pop = len(param_dict['pop'])
+    if param_dict['n_iter'] == None or param_dict['n_burnin'] == None:
+        param_dict['n_iter'] = n_pop*1000
+        param_dict['n_burnin'] = n_pop*500
 
     for key in param_dict:
         print('--%s=%s' % (key, param_dict[key]))

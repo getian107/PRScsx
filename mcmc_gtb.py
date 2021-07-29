@@ -54,9 +54,11 @@ def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size,
 
     # space allocation
     beta_est = {}
+    beta_sq_est = {}
     sigma_est = {}
     for pp in range(n_pop):
         beta_est[pp] = sp.zeros((p[pp],1))
+        beta_sq_est[pp] = sp.zeros((p[pp],1))
         sigma_est[pp] = 0.0
 
     psi_est = sp.zeros((p_tot,1))
@@ -110,6 +112,7 @@ def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size,
         if (itr > n_burnin) and (itr % thin == 0):
             for pp in range(n_pop):
                 beta_est[pp] = beta_est[pp] + beta[pp]/n_pst
+                beta_sq_est[pp] = beta_sq_est[pp] + beta[pp]**2/n_pst
                 sigma_est[pp] = sigma_est[pp] + sigma[pp]/n_pst
 
             psi_est = psi_est + psi/n_pst
@@ -118,14 +121,15 @@ def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size,
     # convert standardized beta to per-allele beta
     for pp in range(n_pop):
         beta_est[pp] /= het[pp]
+        beta_sq_est[pp] /= het[pp]**2
 
     # meta
     if meta == 'TRUE':
         vv = sp.zeros((p_tot,1))
         zz = sp.zeros((p_tot,1))
         for pp in range(n_pop):
-            vv[idx_dict[pp]] += n[pp]/sigma_est[pp]/psi_est[idx_dict[pp]]*het[pp]**2
-            zz[idx_dict[pp]] += n[pp]/sigma_est[pp]/psi_est[idx_dict[pp]]*het[pp]**2*beta_est[pp]
+            vv[idx_dict[pp]] += 1.0/(beta_sq_est[pp]-beta_est[pp]**2)
+            zz[idx_dict[pp]] += 1.0/(beta_sq_est[pp]-beta_est[pp]**2)*beta_est[pp]
         mu = zz/vv
 
     # write posterior effect sizes
