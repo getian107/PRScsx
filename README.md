@@ -9,6 +9,8 @@ Preprint of PRS-CSx is available on medrxiv: https://www.medrxiv.org/content/10.
 
 ## Recent Version History
 
+**July 29, 2021**: Changed default MCMC parameters.
+
 **Jun 4, 2021**: Expanded reference panels to five populations.
 
 **May 26, 2021**: Added suggestions for limiting the number of threads in scipy when running PRS-CS (see Computational Efficiency section below).
@@ -126,9 +128,9 @@ where SNP is the rs ID, A1 is the effect allele, A2 is the alternative allele, B
 
  - PARAM_PHI (optional): Global shrinkage parameter phi. If phi is not specified, it will be learnt from the data using a fully Bayesian approach. This usually works well for polygenic traits with very large GWAS sample sizes (hundreds of thousands of subjects). For GWAS with limited sample sizes (including most of the current disease GWAS), fixing phi to 1e-2 (for highly polygenic traits) or 1e-4 (for less polygenic traits), or doing a small-scale grid search (e.g., phi=1e-6, 1e-4, 1e-2, 1) to find the optimal phi value in the validation dataset often improves perdictive performance.
 
- - MCMC_ITERATIONS (optional): Total number of MCMC iterations. Default is 1,000.
+ - MCMC_ITERATIONS (optional): Total number of MCMC iterations. Default is 1,000 * the number of discovery populations.
 
- - MCMC_BURNIN (optional): Number of burnin iterations. Default is 500.
+ - MCMC_BURNIN (optional): Number of burnin iterations. Default is 500 * the number of discovery populations.
 
  - MCMC_THINNING_FACTOR (optional): Thinning factor of the Markov chain. Default is 5.
 
