@@ -175,6 +175,12 @@ def main():
     param_dict = parse_param()
     n_pop = len(param_dict['pop'])
 
+    if n_pop == 1:
+        print('*** only %d discovery population detected ***\n' % n_pop)
+    else:
+        print('*** %d discovery populations detected ***\n' % n_pop)
+
+
     for chrom in param_dict['chrom']:
         print('##### process chromosome %d #####' % int(chrom))
 
