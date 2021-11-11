@@ -130,7 +130,7 @@ where SNP is the rs ID, A1 is the effect allele, A2 is the alternative allele, B
 
  - MCMC_ITERATIONS (optional): Total number of MCMC iterations. Default is 1,000 * the number of discovery populations.
 
- - MCMC_BURNIN (optional): Number of burnin iterations. Default is 500 * the number of discovery populations.
+ - MCMC_BURNIN (optional): Number of burnin iterations. Default is 500 * the number of discovery populations. Both `--n_iter` and `--n_burnin` need to be specified to overwrite their default values.
 
  - MCMC_THINNING_FACTOR (optional): Thinning factor of the Markov chain. Default is 5.
 
