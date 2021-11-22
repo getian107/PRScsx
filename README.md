@@ -4,7 +4,7 @@
 
 T Ge, CY Chen, Y Ni, YCA Feng, JW Smoller. Polygenic Prediction via Bayesian Regression and Continuous Shrinkage Priors. *Nature Communications*, 10:1776, 2019.
 
-Preprint of PRS-CSx is available on medrxiv: https://www.medrxiv.org/content/10.1101/2020.12.27.20248738v1
+Preprint of PRS-CSx is available on medrxiv: https://www.medrxiv.org/content/10.1101/2020.12.27.20248738v2
 
 
 ## Recent Version History
@@ -170,6 +170,11 @@ python PRScsx.py --ref_dir=path_to_ref --bim_prefix=path_to_bim/test --sst_file=
 `
 
 The test data analysis would be finished in approximately 1 min when using 8Gb of RAM. 
+
+
+## Data release
+
+Posterior SNP effect size estimates for each trait examined in the [PRS-CSx manuscript](https://www.medrxiv.org/content/10.1101/2020.12.27.20248738v2 "PRS-CSx manuscript") are available [here](https://www.dropbox.com/sh/5v1bzlukxoor9fi/AACA580wl_gNKapqWvx3siOza?dl=0 "here").
 
 
 ## Support
