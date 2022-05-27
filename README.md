@@ -174,7 +174,9 @@ The test data analysis would be finished in approximately 1 min when using 8Gb o
 
 ## Data release
 
-Posterior SNP effect size estimates for traits examined in the [PRS-CSx manuscript](https://www.medrxiv.org/content/10.1101/2020.12.27.20248738v2 "PRS-CSx manuscript") are available [here](https://www.dropbox.com/sh/5v1bzlukxoor9fi/AACA580wl_gNKapqWvx3siOza?dl=0 "here").
+Posterior SNP effect size estimates for traits examined in the [PRS-CSx publication](https://www.nature.com/articles/s41588-022-01054-7 "PRS-CSx publication") are available [here](https://www.dropbox.com/sh/5v1bzlukxoor9fi/AACA580wl_gNKapqWvx3siOza?dl=0 "here").
+
+Posterior SNP effect size estimates for the trans-ancestry T2D PRS developed and validated in the Genome Medicine publication are available [here](https://www.dropbox.com/s/c3r880fdthj0vhh/psteff_t2d_mahajan_media_bbj?dl=0 "here").
 
 
 ## Support
