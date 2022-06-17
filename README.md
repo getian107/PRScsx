@@ -4,7 +4,9 @@
 
 T Ge, CY Chen, Y Ni, YCA Feng, JW Smoller. Polygenic Prediction via Bayesian Regression and Continuous Shrinkage Priors. *Nature Communications*, 10:1776, 2019.
 
-Preprint of PRS-CSx is available on medrxiv: https://www.medrxiv.org/content/10.1101/2020.12.27.20248738v2
+The deveopment and evaluation of PRS-CSx are described in the article:
+
+Y Ruan, YF Lin, YCA Feng, CY Chen, M Lam, Z Guo, Stanley Global Asia Initiatives, L He, A Sawa, AR Martin, S Qin, H Huang, T Ge. Improving polygenic prediction in ancestrally diverse populations. *Nature Genetics*, 54:573-580, 2022.
 
 
 ## Recent Version History
