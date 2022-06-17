@@ -68,7 +68,11 @@ Preprint of PRS-CSx is available on medrxiv: https://www.medrxiv.org/content/10.
      [SAS reference](https://www.dropbox.com/s/nto6gdajq8qfhh0/ldblk_ukbb_sas.tar.gz?dl=0 "SAS reference") (~7.37G);
      `tar -zxvf ldblk_ukbb_sas.tar.gz`
     
-    Note that these files are identical to the reference panels used in **PRS-CS**. Therefore, there is no need to download again if you are already using **PRS-CS**.
+    Note that these files are identical to the reference panels used in **PRS-CS**.
+    Therefore, there is no need to download again if you are already using **PRS-CS**.
+    
+    For regions that don't have access to Dropbox, reference panels can be downloaded from the
+    [alternative download site](https://personal.broadinstitute.org/hhuang//public//PRS-CSx/Reference).
 
 - Download the SNP information file and put it in the same folder containing the reference panels:
 
