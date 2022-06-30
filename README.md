@@ -4,9 +4,13 @@
 
 T Ge, CY Chen, Y Ni, YCA Feng, JW Smoller. Polygenic Prediction via Bayesian Regression and Continuous Shrinkage Priors. *Nature Communications*, 10:1776, 2019.
 
-The deveopment and evaluation of PRS-CSx are described in the article:
+The development and evaluation of PRS-CSx are described in:
 
 Y Ruan, YF Lin, YCA Feng, CY Chen, M Lam, Z Guo, Stanley Global Asia Initiatives, L He, A Sawa, AR Martin, S Qin, H Huang, T Ge. Improving polygenic prediction in ancestrally diverse populations. *Nature Genetics*, 54:573-580, 2022.
+
+An application of the "meta" and "auto" version of PRS-CSx is described in:
+
+T Ge et al. Development and validation of a trans-ancestry polygenic risk score for type 2 diabetes in diverse populations. *Genome Medicine*, 14:70, 2022.
 
 
 ## Recent Version History
