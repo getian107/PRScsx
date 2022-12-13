@@ -7,6 +7,7 @@ Reference: L Devroye. Random variate generation for the generalized inverse Gaus
 
 """
 
+
 import math
 from numpy import random
 
