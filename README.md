@@ -15,7 +15,7 @@ T Ge et al. Development and validation of a trans-ancestry polygenic risk score 
 
 ## Version History
 
-**Aug 10, 2023**: Added BETA/OR + SE as a new input format (see the format of GWAS summary statistics below), which is now the recommended input data. When using BETA/OR + P as the input, p-values smaller than 1e-323 are truncated, which may reduce prediction accuracy.
+**Aug 10, 2023**: Added BETA/OR + SE as a new input format (see the format of GWAS summary statistics below), which is now the recommended input data. When using BETA/OR + P as the input, p-values smaller than 1e-323 are truncated, which may reduce prediction accuracy for traits that have highly significant loci.
 
 **July 29, 2021**: Changed default MCMC parameters.
 
