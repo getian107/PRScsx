@@ -1,6 +1,5 @@
 # PRS-CSx
 
-🔴
 **PRS-CSx** is a Python based command line tool that integrates GWAS summary statistics and external LD reference panels from multiple populations to improve cross-population polygenic prediction. Posterior SNP effect sizes are inferred under coupled continuous shrinkage (CS) priors across populations. PRS-CSx is an extension of the Bayesian polygenic prediction method PRS-CS (https://github.com/getian107/PRScs), described in the article:
 
 T Ge, CY Chen, Y Ni, YCA Feng, JW Smoller. Polygenic Prediction via Bayesian Regression and Continuous Shrinkage Priors. *Nature Communications*, 10:1776, 2019.
@@ -16,6 +15,7 @@ T Ge et al. Development and validation of a trans-ancestry polygenic risk score 
 
 ## Version History
 
+🔴
 **Aug 10, 2023**: Added BETA/OR + SE as a new input format (see the format of GWAS summary statistics below), which is now the recommended input data. When using BETA/OR + P as the input, p-values smaller than 1e-323 are truncated, which may reduce prediction accuracy for traits that have highly significant loci.
 
 **July 29, 2021**: Changed default MCMC parameters.
