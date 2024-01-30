@@ -12,6 +12,10 @@ An application of the "meta" and "auto" version of PRS-CSx is described in:
 
 T Ge et al. Development and validation of a trans-ancestry polygenic risk score for type 2 diabetes in diverse populations. *Genome Medicine*, 14:70, 2022.
 
+A review of the methods and best practices for cross-ancestry polygenic prediction is available at:
+
+L Kachuri, N Chatterjee, J Hirbo, DJ Schaid, I Martin, IJ Kullo, EE Kenny, B Pasaniuc, JS Witte, T Ge. Principles and methods for transferring polygenic risk scores across global populations. *Nature Reviews Genetics*, 25:8-25, 2024.
+
 
 ## Version History
 
