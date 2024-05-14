@@ -17,6 +17,8 @@
 
 ## Version History
 
+**May 14, 2024**: Replaced some scipy functions with numpy due to changes in the latest scipy version.
+
 🔴
 **Aug 10, 2023**: Added BETA/OR + SE as a new input format (see the format of GWAS summary statistics below), which is now the recommended input data. When using BETA/OR + P as the input, p-values smaller than 1e-323 are truncated, which may reduce prediction accuracy for traits that have highly significant loci.
 
