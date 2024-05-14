@@ -6,7 +6,7 @@ Markov Chain Monte Carlo (MCMC) sampler for cross-ethnic polygenic prediction wi
 """
 
 
-import scipy as sp
+import numpy as np
 from scipy import linalg 
 from numpy import random
 import gigrnd
@@ -30,9 +30,9 @@ def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size,
     for pp in range(n_pop):
         p[pp] = len(beta_mrg[pp])
         n_blk[pp] = len(ld_blk[pp])
-        het[pp] = sp.sqrt(2.0*frq_dict[pp]*(1.0-frq_dict[pp]))
+        het[pp] = np.sqrt(2.0*frq_dict[pp]*(1.0-frq_dict[pp]))
 
-    n_grp = sp.zeros((p_tot,1))
+    n_grp = np.zeros((p_tot,1))
     for jj in range(p_tot):
         for pp in range(n_pop):
             if jj in idx_dict[pp]:
@@ -42,10 +42,10 @@ def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size,
     beta = {}
     sigma = {}
     for pp in range(n_pop):
-        beta[pp] = sp.zeros((p[pp],1))
+        beta[pp] = np.zeros((p[pp],1))
         sigma[pp] = 1.0
 
-    psi = sp.ones((p_tot,1))
+    psi = np.ones((p_tot,1))
 
     if phi == None:
         phi = 1.0; phi_updt = True
@@ -57,11 +57,11 @@ def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size,
     beta_sq_est = {}
     sigma_est = {}
     for pp in range(n_pop):
-        beta_est[pp] = sp.zeros((p[pp],1))
-        beta_sq_est[pp] = sp.zeros((p[pp],1))
+        beta_est[pp] = np.zeros((p[pp],1))
+        beta_sq_est[pp] = np.zeros((p[pp],1))
         sigma_est[pp] = 0.0
 
-    psi_est = sp.zeros((p_tot,1))
+    psi_est = np.zeros((p_tot,1))
     phi_est = 0.0
 
     # MCMC
@@ -77,12 +77,12 @@ def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size,
                     continue
                 else:
                     idx_blk = range(mm,mm+blk_size[pp][kk])
-                    dinvt = ld_blk[pp][kk]+sp.diag(1.0/psi_pp[idx_blk].T[0])
+                    dinvt = ld_blk[pp][kk]+np.diag(1.0/psi_pp[idx_blk].T[0])
                     dinvt_chol = linalg.cholesky(dinvt)
                     beta_tmp = linalg.solve_triangular(dinvt_chol, beta_mrg[pp][idx_blk], trans='T') \
-                               + sp.sqrt(sigma[pp]/n[pp])*random.randn(len(idx_blk),1)
+                               + np.sqrt(sigma[pp]/n[pp])*random.randn(len(idx_blk),1)
                     beta[pp][idx_blk] = linalg.solve_triangular(dinvt_chol, beta_tmp, trans='N')
-                    quad += sp.dot(sp.dot(beta[pp][idx_blk].T, dinvt), beta[pp][idx_blk])
+                    quad += np.dot(np.dot(beta[pp][idx_blk].T, dinvt), beta[pp][idx_blk])
                     mm += blk_size[pp][kk]
 
             err = max(n[pp]/2.0*(1.0-2.0*sum(beta[pp]*beta_mrg[pp])+quad), n[pp]/2.0*sum(beta[pp]**2/psi_pp))
@@ -90,7 +90,7 @@ def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size,
 
         delta = random.gamma(a+b, 1.0/(psi+phi))
 
-        xx = sp.zeros((p_tot,1))
+        xx = np.zeros((p_tot,1))
         for pp in range(n_pop):
             xx[idx_dict[pp]] += n[pp]*beta[pp]**2/sigma[pp]
 
@@ -125,8 +125,8 @@ def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size,
 
     # meta
     if meta == 'TRUE':
-        vv = sp.zeros((p_tot,1))
-        zz = sp.zeros((p_tot,1))
+        vv = np.zeros((p_tot,1))
+        zz = np.zeros((p_tot,1))
         for pp in range(n_pop):
             vv[idx_dict[pp]] += 1.0/(beta_sq_est[pp]-beta_est[pp]**2)
             zz[idx_dict[pp]] += 1.0/(beta_sq_est[pp]-beta_est[pp]**2)*beta_est[pp]

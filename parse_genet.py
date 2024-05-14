@@ -7,7 +7,7 @@ Parse the reference panel, summary statistics, and validation set.
 
 
 import os
-import scipy as sp
+import numpy as np
 from scipy.stats import norm
 from scipy import linalg
 import h5py
@@ -101,7 +101,7 @@ def parse_sumstats(ref_dict, vld_dict, sst_file, pop, n_subj):
     print('... %d common SNPs in the %s reference, %s sumstats, and validation set ...' % (len(comm_snp), pop.upper(), pop.upper()))
 
 
-    n_sqrt = sp.sqrt(n_subj)
+    n_sqrt = np.sqrt(n_subj)
     sst_eff = {}
     with open(sst_file) as ff:
         header = (next(ff).strip()).split()
@@ -115,14 +115,14 @@ def parse_sumstats(ref_dict, vld_dict, sst_file, pop, n_subj):
                 if 'BETA' in header:
                     beta = float(ll[3])
                 elif 'OR' in header:
-                    beta = sp.log(float(ll[3]))
+                    beta = np.log(float(ll[3]))
 
                 if 'SE' in header:
                     se = float(ll[4])
                     beta_std = beta/se/n_sqrt
                 elif 'P' in header:
                     p = max(float(ll[4]), 1e-323)
-                    beta_std = sp.sign(beta)*abs(norm.ppf(p/2.0))/n_sqrt
+                    beta_std = np.sign(beta)*abs(norm.ppf(p/2.0))/n_sqrt
 
                 sst_eff.update({snp: beta_std})
 
@@ -130,14 +130,14 @@ def parse_sumstats(ref_dict, vld_dict, sst_file, pop, n_subj):
                 if 'BETA' in header:
                     beta = float(ll[3])
                 elif 'OR' in header:
-                    beta = sp.log(float(ll[3]))
+                    beta = np.log(float(ll[3]))
 
                 if 'SE' in header:
                     se = float(ll[4])
                     beta_std = -1*beta/se/n_sqrt
                 elif 'P' in header:
                     p = max(float(ll[4]), 1e-323)
-                    beta_std = -1*sp.sign(beta)*abs(norm.ppf(p/2.0))/n_sqrt
+                    beta_std = -1*np.sign(beta)*abs(norm.ppf(p/2.0))/n_sqrt
 
                 sst_eff.update({snp: beta_std})
 
@@ -169,7 +169,7 @@ def parse_ldblk(ldblk_dir, sst_dict, pop, chrom, ref):
 
     hdf_chr = h5py.File(chr_name, 'r')
     n_blk = len(hdf_chr)
-    ld_blk = [sp.array(hdf_chr['blk_'+str(blk)]['ldblk']) for blk in range(1,n_blk+1)]
+    ld_blk = [np.array(hdf_chr['blk_'+str(blk)]['ldblk']) for blk in range(1,n_blk+1)]
 
     snp_blk = []
     for blk in range(1,n_blk+1):
@@ -183,15 +183,15 @@ def parse_ldblk(ldblk_dir, sst_dict, pop, chrom, ref):
         if idx != []:
             idx_blk = range(mm,mm+len(idx))
             flip = [sst_dict['FLP'][jj] for jj in idx_blk]
-            ld_blk[blk] = ld_blk[blk][sp.ix_(idx,idx)]*sp.outer(flip,flip)
+            ld_blk[blk] = ld_blk[blk][np.ix_(idx,idx)]*np.outer(flip,flip)
 
             _, s, v = linalg.svd(ld_blk[blk])
-            h = sp.dot(v.T, sp.dot(sp.diag(s), v))
+            h = np.dot(v.T, np.dot(np.diag(s), v))
             ld_blk[blk] = (ld_blk[blk]+h)/2
 
             mm += len(idx)
         else:
-            ld_blk[blk] = sp.array([])
+            ld_blk[blk] = np.array([])
 
     return ld_blk, blk_size
 
@@ -219,8 +219,8 @@ def align_ldblk(ref_dict, vld_dict, sst_dict, n_pop, chrom):
     frq_dict = {}
     idx_dict = {}
     for pp in range(n_pop):
-        beta_dict[pp] = sp.array(sst_dict[pp]['BETA'], ndmin=2).T
-        frq_dict[pp] = sp.array(sst_dict[pp]['FRQ'], ndmin=2).T
+        beta_dict[pp] = np.array(sst_dict[pp]['BETA'], ndmin=2).T
+        frq_dict[pp] = np.array(sst_dict[pp]['FRQ'], ndmin=2).T
         idx_dict[pp] = [ii for (ii,snp) in enumerate(snp_dict['SNP']) if snp in sst_dict[pp]['SNP']]
 
     return snp_dict, beta_dict, frq_dict, idx_dict
