@@ -1,19 +1,24 @@
 # PRS-CSx
 
-**PRS-CSx** is a Python based command line tool that integrates GWAS summary statistics and external LD reference panels from multiple populations to improve cross-population polygenic prediction. Posterior SNP effect sizes are inferred under coupled continuous shrinkage (CS) priors across populations. PRS-CSx is an extension of the Bayesian polygenic prediction method PRS-CS (https://github.com/getian107/PRScs), described in the article:
+**PRS-CSx** is a Python based command line tool that integrates GWAS summary statistics and external LD reference panels from multiple populations to improve cross-population polygenic prediction. Posterior SNP effect sizes are inferred under coupled continuous shrinkage (CS) priors across populations. 
 
-T Ge, CY Chen, Y Ni, YCA Feng, JW Smoller. Polygenic Prediction via Bayesian Regression and Continuous Shrinkage Priors. *Nature Communications*, 10:1776, 2019.
+- The development and evaluation of PRS-CSx are described in: \
+  Y Ruan, YF Lin, YCA Feng, CY Chen, M Lam, Z Guo, Stanley Global Asia Initiatives, L He, A Sawa, AR Martin, S Qin, H Huang, T Ge. Improving polygenic prediction in ancestrally diverse populations. *Nature Genetics*, 54:573-580, 2022.
 
-The development and evaluation of PRS-CSx are described in:
+- An application of the "meta" and "auto" version of PRS-CSx is described in: \
+  T Ge et al. Development and validation of a trans-ancestry polygenic risk score for type 2 diabetes in diverse populations. *Genome Medicine*, 14:70, 2022.
 
-Y Ruan, YF Lin, YCA Feng, CY Chen, M Lam, Z Guo, Stanley Global Asia Initiatives, L He, A Sawa, AR Martin, S Qin, H Huang, T Ge. Improving polygenic prediction in ancestrally diverse populations. *Nature Genetics*, 54:573-580, 2022.
+- PRS-CSx is an extension of the polygenic prediction method PRS-CS (https://github.com/getian107/PRScs), described in the article: \
+  T Ge, CY Chen, Y Ni, YCA Feng, JW Smoller. Polygenic Prediction via Bayesian Regression and Continuous Shrinkage Priors. *Nature Communications*, 10:1776, 2019.
 
-An application of the "meta" and "auto" version of PRS-CSx is described in:
+- A review of the methods and best practices for cross-ancestry polygenic prediction is available at: \
+  L Kachuri, N Chatterjee, J Hirbo, DJ Schaid, I Martin, IJ Kullo, EE Kenny, B Pasaniuc, JS Witte, T Ge. Principles and methods for transferring polygenic risk scores across global populations. *Nature Reviews Genetics*, 25:8-25, 2024.
 
-T Ge et al. Development and validation of a trans-ancestry polygenic risk score for type 2 diabetes in diverse populations. *Genome Medicine*, 14:70, 2022.
 
+## Version History
 
-## Recent Version History
+🔴
+**Aug 10, 2023**: Added BETA/OR + SE as a new input format (see the format of GWAS summary statistics below), which is now the recommended input data. When using BETA/OR + P as the input, p-values smaller than 1e-323 are truncated, which may reduce prediction accuracy for traits that have highly significant loci.
 
 **July 29, 2021**: Changed default MCMC parameters.
 
@@ -104,14 +109,32 @@ python PRScsx.py --ref_dir=PATH_TO_REFERENCE --bim_prefix=VALIDATION_BIM_PREFIX 
 
  - VALIDATION_BIM_PREFIX (required): Full path and the prefix of the bim file for the target (validation/testing) dataset. This file is used to provide a list of SNPs that are available in the target dataset.
 
- - SUM_STATS_FILE (required): Full path and the file name of the GWAS summary statistics. Multiple GWAS summary statistics files are allowed and should be separated by comma. Summary statistics files must have the following format (including the header line and order of the columns):
+ - SUM_STATS_FILE (required): Full path and the file name of the GWAS summary statistics. Multiple GWAS summary statistics files are allowed and should be separated by comma. The summary statistics file must include either BETA/OR + SE or BETA/OR + P. When using BETA/OR + SE as the input, the file must have the following format (including the header line):
 
+```
+    SNP          A1   A2   BETA      SE
+    rs4970383    C    A    -0.0064   0.0090
+    rs4475691    C    T    -0.0145   0.0094
+    rs13302982   A    G    -0.0232   0.0199
+    ...
+```
+Or:
+```
+    SNP          A1   A2   OR        SE
+    rs4970383    A    C    0.9825    0.0314                 
+    rs4475691    T    C    0.9436    0.0319
+    rs13302982   A    G    1.1337    0.0543
+    ...
+```
+where SNP is the rs ID, A1 is the effect allele, A2 is the alternative allele, BETA/OR is the effect/odds ratio of the A1 allele, SE is the standard error of the effect. Note that when OR is used, SE corresponds to the standard error of logOR.
+
+When using BETA/OR + P as the input, the file must have the following format (including the header line):
 
 ```
     SNP          A1   A2   BETA      P
-    rs4970383    C    A    -0.0064   4.7780e-01
-    rs4475691    C    T    -0.0145   1.2450e-01
-    rs13302982   A    G    -0.0232   2.4290e-01
+    rs4970383    C    A    -0.0064   0.4778
+    rs4475691    C    T    -0.0145   0.1245
+    rs13302982   A    G    -0.0232   0.2429
     ...
 ```
 Or:
@@ -122,7 +145,7 @@ Or:
     rs13302982   A    G    1.1337    0.0209
     ...
 ```
-where SNP is the rs ID, A1 is the effect allele, A2 is the alternative allele, BETA/OR is the effect/odds ratio of the A1 allele, P is the p-value of the effect. In fact, BETA/OR is only used to determine the direction of an association. Therefore if z-scores or even +1/-1 indicating effect directions are presented in the BETA column, the algorithm should still work properly.
+where SNP is the rs ID, A1 is the effect allele, A2 is the alternative allele, BETA/OR is the effect/odds ratio of the A1 allele, P is the p-value of the effect. Here, a standardized effect size is calculated using the p-value while BETA/OR is only used to determine the direction of an association. Therefore if z-scores or even +1/-1 indicating effect directions are presented in the BETA column, the algorithm should still work properly.
 
  - GWAS_SAMPLE_SIZE (required): Sample sizes of the GWAS, in the same order of the GWAS summary statistics files, separated by comma.
 
@@ -155,7 +178,7 @@ where SNP is the rs ID, A1 is the effect allele, A2 is the alternative allele, B
 
 For each input GWAS, PRS-CSx writes posterior SNP effect size estimates for each chromosome to the user-specified directory. The output file contains chromosome, rs ID, base position, A1, A2 and posterior effect size estimate for each SNP. If `--meta=True`, meta-analyzed posterior effect sizes will also be written to the output directory. An individual-level polygenic score can be produced by concatenating output files from all chromosomes and then using `PLINK`'s `--score` command (https://www.cog-genomics.org/plink/1.9/score). If polygenic scores are generated by chromosome, use the 'sum' modifier so that they can be combined into a genome-wide score.
 
-We recommend calculating one polygenic score for each discovery population using population-specific posterior SNP effect size estimates and learn a linear combination of the polygenic scores that most accurately predicts the trait in the validation dataset. The predictive performance of the method can be assessed in an independent dataset, using the optimal global shrinkage parameter phi (if grid search is used) and weights for the linear combination learnt in the validation dataset. Separate evaluation of each population-specific polygenic score is NOT the intended use of PRS-CSx. We recommend standardizing the polygenic scores (i.e., converting the scores to zero mean and unit variance) in both validation and testing datasets before learning/applying the linear combination.
+In general, there are often two approaches to use the output of PRS-CSx. Given a global shrinkage parameter, the first approach calculates one polygenic score for each discovery population using population-specific posterior SNP effect size estimates and learns a linear combination of the polygenic scores that most accurately predicts the trait in the validation dataset. The optimal global shrinkage parameter and linear combination weights are then taken to an independent dataset, where the predictive performance of the final PRS can be assessed. We recommend standardizing the polygenic scores (i.e., converting the scores to zero mean and unit variance) in both validation and testing datasets before learning/applying the linear combination. Alternatively, the 'auto' and 'meta' version of the PRS-CSx algorithm can be used, which does not require a validation dataset to tune hyper-parameters. This approach may be less accurate compared to the linear combination approach (where the final PRS is optimized in a specific population) but can be useful when a validation dataset is not available (e.g., due to limited total sample size in the target dataset).
 
 
 ## Computational Efficiency
