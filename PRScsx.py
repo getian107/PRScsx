@@ -8,15 +8,15 @@ PRS-CSx is an extension of the Bayesian polygenic prediction method PRS-CS.
 References: T Ge, CY Chen, Y Ni, YCA Feng, JW Smoller. Polygenic Prediction via Bayesian Regression and Continuous Shrinkage Priors.
            Nature Communications, 10:1776, 2019.
 
-           Ruan Y, Feng YCA, Chen CY, Lam M, Stanley Global Asia Initiatives, Sawa A, Martin AR, Qin S, Huang H, Ge T.
+           Ruan Y, Lin YF, Feng YCA, Chen CY, Lam M, Guo Z, Stanley Global Asia Initiatives, He L, Sawa A, Martin AR, Qin S, Huang H, Ge T.
            Improving Polygenic Prediction in Ancestrally Diverse Populations.
-           MedRxiv preprint, 2021.
+           Nature Genetics, 54:573-580, 2022.
 
 Usage:
 python PRScsx.py --ref_dir=PATH_TO_REFERENCE --bim_prefix=VALIDATION_BIM_PREFIX --sst_file=SUM_STATS_FILE --n_gwas=GWAS_SAMPLE_SIZE
                  --pop=POPULATION --out_dir=OUTPUT_DIR --out_name=OUTPUT_FILE_PREFIX
                  [--a=PARAM_A --b=PARAM_B --phi=PARAM_PHI --n_iter=MCMC_ITERATIONS --n_burnin=MCMC_BURNIN --thin=MCMC_THINNING_FACTOR
-                  --chrom=CHROM --meta=META_FLAG --seed=SEED]
+                  --chrom=CHROM --meta=META_FLAG --write_pst=WRITE_POSTERIOR_SAMPLES --seed=SEED]
 
 """
 
@@ -32,10 +32,11 @@ import gigrnd
 
 def parse_param():
     long_opts_list = ['ref_dir=', 'bim_prefix=', 'sst_file=', 'a=', 'b=', 'phi=', 'n_gwas=', 'pop=',
-                      'n_iter=', 'n_burnin=', 'thin=', 'out_dir=', 'out_name=', 'chrom=', 'meta=', 'seed=', 'help']
+                      'n_iter=', 'n_burnin=', 'thin=', 'out_dir=', 'out_name=', 'chrom=', 'meta=', 'write_pst=', 'seed=', 'help']
 
     param_dict = {'ref_dir': None, 'bim_prefix': None, 'sst_file': None, 'a': 1, 'b': 0.5, 'phi': None, 'n_gwas': None, 'pop': None,
-                  'n_iter': None, 'n_burnin': None, 'thin': 5, 'out_dir': None, 'out_name': None, 'chrom': range(1,23), 'meta': 'FALSE', 'seed': None}
+                  'n_iter': None, 'n_burnin': None, 'thin': 5, 'out_dir': None, 'out_name': None, 'chrom': range(1,23),
+                  'meta': 'FALSE', 'write_pst': 'FALSE', 'seed': None}
 
     print('\n')
 
@@ -66,6 +67,7 @@ def parse_param():
             elif opt == "--out_name": param_dict['out_name'] = arg
             elif opt == "--chrom": param_dict['chrom'] = arg.split(',')
             elif opt == "--meta": param_dict['meta'] = arg.upper()
+            elif opt == "--write_pst": param_dict['write_pst'] = arg.upper()
             elif opt == "--seed": param_dict['seed'] = int(arg)
     else:
         print(__doc__)
@@ -145,7 +147,7 @@ def main():
 
         mcmc_gtb.mcmc(param_dict['a'], param_dict['b'], param_dict['phi'], snp_dict, beta_dict, frq_dict, idx_dict, param_dict['n_gwas'], ld_blk, blk_size,
             param_dict['n_iter'], param_dict['n_burnin'], param_dict['thin'], param_dict['pop'], int(chrom),
-            param_dict['out_dir'], param_dict['out_name'], param_dict['meta'], param_dict['seed'])
+            param_dict['out_dir'], param_dict['out_name'], param_dict['meta'], param_dict['write_pst'], param_dict['seed'])
 
         print('\n')
 

@@ -12,7 +12,7 @@ from numpy import random
 import gigrnd
 
 
-def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size, n_iter, n_burnin, thin, pop, chrom, out_dir, out_name, meta, seed):
+def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size, n_iter, n_burnin, thin, pop, chrom, out_dir, out_name, meta, write_pst, seed):
     print('... MCMC ...')
 
     # seed
@@ -20,7 +20,7 @@ def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size,
         random.seed(seed)
 
     # derived stats
-    n_pst = (n_iter-n_burnin)/thin
+    n_pst = int((n_iter-n_burnin)/thin)
     n_pop = len(pop)
     p_tot = len(snp_dict['SNP'])
 
@@ -52,6 +52,11 @@ def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size,
     else:
         phi_updt = False
 
+    if (write_pst == 'TRUE') and (meta == 'TRUE'):
+        beta_pst = {}
+        for pp in range(n_pop):
+            beta_pst[pp] = np.zeros((p[pp],n_pst))
+
     # space allocation
     beta_est = {}
     beta_sq_est = {}
@@ -65,6 +70,7 @@ def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size,
     phi_est = 0.0
 
     # MCMC
+    qq = 0
     for itr in range(1,n_iter+1):
         if itr % 100 == 0:
             print('--- iter-' + str(itr) + ' ---')
@@ -118,10 +124,19 @@ def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size,
             psi_est = psi_est + psi/n_pst
             phi_est = phi_est + phi/n_pst
 
+            if (write_pst == 'TRUE') and (meta == 'TRUE'):
+                for pp in range(n_pop):
+                    beta_pst[pp][:,[qq]] = beta[pp]
+                qq += 1
+
     # convert standardized beta to per-allele beta
     for pp in range(n_pop):
         beta_est[pp] /= het[pp]
         beta_sq_est[pp] /= het[pp]**2
+
+    if (write_pst == 'TRUE') and (meta == 'TRUE'):
+        for pp in range(n_pop):
+            beta_pst[pp] /= het[pp]
 
     # meta
     if meta == 'TRUE':
@@ -131,6 +146,14 @@ def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size,
             vv[idx_dict[pp]] += 1.0/(beta_sq_est[pp]-beta_est[pp]**2)
             zz[idx_dict[pp]] += 1.0/(beta_sq_est[pp]-beta_est[pp]**2)*beta_est[pp]
         mu = zz/vv
+
+        if write_pst == 'TRUE':
+            vv = np.zeros((p_tot,1))
+            zz = np.zeros((p_tot,n_pst))
+            for pp in range(n_pop):
+                vv[idx_dict[pp]] += 1.0/(beta_sq_est[pp]-beta_est[pp]**2)
+                zz[idx_dict[pp],:] += 1.0/(beta_sq_est[pp]-beta_est[pp]**2)*beta_pst[pp]
+            mu_pst = zz/vv    
 
     # write posterior effect sizes
     for pp in range(n_pop):
@@ -155,8 +178,13 @@ def mcmc(a, b, phi, snp_dict, beta_mrg, frq_dict, idx_dict, n, ld_blk, blk_size,
             eff_file = out_dir + '/' + '%s_META_pst_eff_a%d_b%.1f_phi%1.0e_chr%d.txt' % (out_name, a, b, phi, chrom)
 
         with open(eff_file, 'w') as ff:
-            for snp, bp, a1, a2, beta in zip(snp_dict['SNP'], snp_dict['BP'], snp_dict['A1'], snp_dict['A2'], mu):
-                ff.write('%d\t%s\t%d\t%s\t%s\t%.6e\n' % (chrom, snp, bp, a1, a2, beta))
+            if write_pst == 'TRUE':
+                for snp, bp, a1, a2, beta in zip(snp_dict['SNP'], snp_dict['BP'], snp_dict['A1'], snp_dict['A2'], mu_pst):
+                    ff.write(('%d\t%s\t%d\t%s\t%s' + '\t%.6e'*n_pst + '\n') % (chrom, snp, bp, a1, a2, *beta))
+            else:
+                for snp, bp, a1, a2, beta in zip(snp_dict['SNP'], snp_dict['BP'], snp_dict['A1'], snp_dict['A2'], mu):
+                    ff.write('%d\t%s\t%d\t%s\t%s\t%.6e\n' % (chrom, snp, bp, a1, a2, beta))
+
 
     # print estimated phi
     if phi_updt == True:
