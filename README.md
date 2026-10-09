@@ -98,13 +98,8 @@
 - PRScsx requires Python packages **scipy** (https://www.scipy.org/) and **h5py** (https://www.h5py.org/) installed. 
 
 > [!IMPORTANT]
-> Python and package versions
-> Please make sure to use Python 3.10 (or 3.11 should work as well) with following versions of the packages.
-> With `scipy > 1.12`, MCMC step will hang 
->```bash
->pip install "numpy<2" "scipy<1.12" "h5py<3.11"
->```
-
+> The program has not been tested with the latest Python, NumPy, and SciPy versions and may have compatibility issues.
+> We currently recommend using NumPy 1.x. A compatible environment would be, for example, Python 3.11 or 3.12 with NumPy 1.26, SciPy 1.11, and h5py 3.10.
  
 - Once Python and its dependencies have been installed, running
 
